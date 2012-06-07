@@ -21,7 +21,7 @@ public class NettyNetworkModule extends AbstractModule {
 		bindConstant().annotatedWith(NettyNetworkInitialClientCapacity.class).to(INITIAL_CLIENT_CAPACITY);
 		bindConstant().annotatedWith(NettyNetworkPort.class).to(PORT);
 
-		bind(INetworkService.class).to(AbstractNettyNetworkService.class).in(Scopes.SINGLETON);
+		bind(INetworkService.class).to(NettyNetworkService.class).in(Scopes.SINGLETON);
 		bind(INetworkProtocol.class).to(NettyNetworkProtocol.class).in(Scopes.SINGLETON);
 		bind(INetworkProtocolDecoder.class).to(NettyNetworkProtocolDecoder.class).in(Scopes.SINGLETON);
 		bind(INetworkProtocolEncoder.class).to(NettyNetworkProtocolEncoder.class).in(Scopes.SINGLETON);
