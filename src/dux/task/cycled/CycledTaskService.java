@@ -37,8 +37,7 @@ public abstract class CycledTaskService extends BaseTaskService {
 					synchronized (mutex) {
 						Iterator<ITask> it = getTasks().iterator();
 						while (it.hasNext()) {
-							ITask next = it.next();
-							if (!next.run())
+							if (!it.next().run())
 								it.remove();
 						}
 					}
