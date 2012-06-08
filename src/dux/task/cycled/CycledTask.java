@@ -18,7 +18,7 @@ public abstract class CycledTask extends BaseTask {
 			countdown = cycles;
 			return super.run();
 		}
-		return false;
+		return isRunning();
 	}
 
 }

@@ -10,6 +10,8 @@ public abstract class BaseTaskService extends Thread implements ITaskService {
 
 	private final List<ITask> tasks;
 
+	protected final Object mutex = new Object();
+
 	private boolean running;
 
 	protected BaseTaskService(String threadName, int initialTaskCapacity) {
@@ -17,7 +19,7 @@ public abstract class BaseTaskService extends Thread implements ITaskService {
 		this.tasks = new ArrayList<ITask>(initialTaskCapacity);
 	}
 
-	protected synchronized List<ITask> getTasks() {
+	protected List<ITask> getTasks() {
 		return tasks;
 	}
 
@@ -27,7 +29,9 @@ public abstract class BaseTaskService extends Thread implements ITaskService {
 
 	@Override
 	public void submit(ITask task) {
-		tasks.add(task);
+		synchronized (mutex) {
+			getTasks().add(task);
+		}
 	}
 
 	@Override

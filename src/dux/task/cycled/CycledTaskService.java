@@ -34,15 +34,18 @@ public abstract class CycledTaskService extends BaseTaskService {
 			systemTime = System.currentTimeMillis();
 			if ((systemTime - lastCycle) > getCycleLength()) {
 				if (getTasks().size() > 0) {
-					Iterator<ITask> it = getTasks().iterator();
-					while (it.hasNext()) {
-						if (!it.next().run())
-							it.remove();
+					synchronized (mutex) {
+						Iterator<ITask> it = getTasks().iterator();
+						while (it.hasNext()) {
+							ITask next = it.next();
+							if (!next.run())
+								it.remove();
+						}
 					}
 				}
 				long timeTaken = System.currentTimeMillis() - systemTime;
 				if (timeTaken > getCycleLength()) {
-					logger.warning("Engine overloaded by " + ((timeTaken / cycleLength) * 100) + "%");
+					logger.warning("Engine overloaded by " + (((timeTaken / cycleLength) * 100) - 100) + "%");
 				} else {
 					try {
 						sleep(getCycleLength() - timeTaken);
